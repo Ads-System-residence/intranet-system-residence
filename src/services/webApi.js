@@ -1,5 +1,6 @@
-import axios from 'axios';
+import Axios from "axios";
 
-export const SystemResidenceAPI = axios.create({
-    baseURL:"https://api-system-residence-dsn.herokuapp.com"
+// CREATE
+export const SystemResidenceAPI = Axios.create({
+    baseURL: "http://localhost:8080",
 });
