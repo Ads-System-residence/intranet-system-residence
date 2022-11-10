@@ -1,21 +1,27 @@
 import React from 'react';
 import "../css/Login.css";
-import { useState, useContext } from 'react';
-import { AuthContext } from '../../../contexts/auth';
+import { useState } from 'react';
+import LoginAPI from "../api/api";
+import { redirect } from "../../../Common/miscellaneous";
+import { UserInfo } from "../../../Common/Util/storage";
 
 
 export default function Login() {
 
-  const { authenticated, login } = useContext(AuthContext);
-  
+
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
+  const [tentativasLogin, setTentativasLogin] = useState(0);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    console.table("submit",{usuario, senha});
-
-    login(usuario, senha);
+    LoginAPI.autenticarUsuario(usuario, senha).then((res) => {
+          if (res.erro) {
+            setTentativasLogin(tentativasLogin + 1);
+          } else  {
+              UserInfo(res);
+              redirect("/Home");
+          }
+    });
   }
   
   return (
@@ -24,7 +30,7 @@ export default function Login() {
         <div className="container">
           <div className="centralBox">
             <h1> Login: </h1>
-            <form onSubmit={handleSubmit}>
+            <div>
               
               {/* Usuário */}
               <input type="text" className="User" placeholder="Usuário"
@@ -38,8 +44,8 @@ export default function Login() {
               onChange = {(e) => setSenha(e.target.value)}
               />
 
-              <button className="button" > Entrar </button>
-            </form>
+              <button className="button" onClick={(e) => handleSubmit(e)} > Entrar </button>
+            </div>
           </div>
         </div>
     </React.Fragment>
