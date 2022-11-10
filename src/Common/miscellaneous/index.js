@@ -14,3 +14,7 @@ export const  PossuiPermissao = (tokenAcessSystem) => {
     const jwt =  Storage("token");
     return jwt.some((t) => t === tokenAcessSystem);
 };
+
+export const redirect = (url) => {
+    window.location.href = url;
+}

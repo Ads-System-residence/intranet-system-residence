@@ -2,6 +2,8 @@ import React from 'react';
 import "../css/Login.css";
 import { useState } from 'react';
 import LoginAPI from "../api/api";
+import { redirect } from "../../../Common/miscellaneous";
+import { UserInfo } from "../../../Common/Util/storage";
 
 
 export default function Login() {
@@ -12,13 +14,13 @@ export default function Login() {
   const [tentativasLogin, setTentativasLogin] = useState(0);
 
   const handleSubmit = (e) => {
-    debugger;
     LoginAPI.autenticarUsuario(usuario, senha).then((res) => {
-          window.location.href = "/Home"
-          if (res.erros) {
+          if (res.erro) {
             setTentativasLogin(tentativasLogin + 1);
-      }
-      debugger;
+          } else  {
+              UserInfo(res);
+              redirect("/Home");
+          }
     });
   }
   
